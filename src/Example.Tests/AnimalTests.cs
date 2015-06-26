@@ -28,7 +28,7 @@ namespace Example.Tests
             var result = dog.Talk();
 
             // Then
-            Assert.Equal("Bark", result);
+            Assert.Equal("Woof", result);
         }
     }
 }
