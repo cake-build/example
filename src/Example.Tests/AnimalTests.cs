@@ -1,4 +1,4 @@
-﻿using Example.Core.Animals;
+﻿using Example.Animals;
 using Xunit;
 
 namespace Example.Tests

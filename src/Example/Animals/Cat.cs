@@ -1,4 +1,4 @@
-﻿namespace Example.Core.Animals
+﻿namespace Example.Animals
 {
     public sealed class Cat : IAnimal
     {
