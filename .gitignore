@@ -5,8 +5,7 @@
 
 # Build related
 tools/Cake/
-tools/xunit.runners/
-tools/xunit.runner.console/
+tools/NUnit.Runners/
 tools/nuget.exe
 
 ## Ignore Visual Studio temporary files, build results, and

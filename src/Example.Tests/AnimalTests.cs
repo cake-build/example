@@ -1,11 +1,12 @@
 ﻿using Example.Animals;
-using Xunit;
+using NUnit.Framework;
 
 namespace Example.Tests
 {
+	[TestFixture]
     public sealed class AnimalTests
     {
-        [Fact]
+        [Test]
         public void The_Cat_Should_Meow()
         {
             // Given
@@ -15,10 +16,10 @@ namespace Example.Tests
             var result = cat.Talk();
 
             // Then
-            Assert.Equal("Meow", result);
+            Assert.AreEqual("Meow", result);
         }
 
-        [Fact]
+        [Test]
         public void The_Dog_Should_Bark()
         {
             // Given
@@ -28,7 +29,7 @@ namespace Example.Tests
             var result = dog.Talk();
 
             // Then
-            Assert.Equal("Woof", result);
+            Assert.AreEqual("Woof", result);
         }
     }
 }

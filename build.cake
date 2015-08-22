@@ -33,8 +33,17 @@ Task("Build")
     .IsDependentOn("Restore-NuGet-Packages")
     .Does(() =>
 {
-    MSBuild("./src/Example.sln", settings =>
+    if(IsRunningOnWindows())
+    {
+      // Use MSBuild
+      MSBuild("./src/Example.sln", settings =>
         settings.SetConfiguration(configuration));
+    }
+    else
+    {
+      // Use XBuild
+      XBuild("./src/Example.sln");
+    }
 });
 
 //////////////////////////////////////////////////////////////////////
