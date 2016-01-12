@@ -42,7 +42,8 @@ Task("Build")
     else
     {
       // Use XBuild
-      XBuild("./src/Example.sln");
+      XBuild("./src/Example.sln", settings =>
+        settings.SetConfiguration(configuration));
     }
 });
 
