@@ -52,7 +52,7 @@ Task("Run-Unit-Tests")
     .Does(() =>
 {
     NUnit3("./src/**/bin/*.Tests.dll", new NUnit3Settings {
-        NoResults ) true
+        NoResults = true
         });
 });
 
