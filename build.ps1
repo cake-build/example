@@ -9,6 +9,9 @@ Param(
     [switch]$WhatIf
 )
 
+#making it compatible with powershell 2.0
+$PSScriptRoot = split-path -parent $MyInvocation.MyCommand.Definition; 
+
 $TOOLS_DIR = Join-Path $PSScriptRoot "tools"
 $NUGET_EXE = Join-Path $TOOLS_DIR "nuget.exe"
 $CAKE_EXE = Join-Path $TOOLS_DIR "Cake/Cake.exe"
@@ -27,7 +30,7 @@ if($WhatIf.IsPresent) {
 
 # Try download NuGet.exe if do not exist.
 if (!(Test-Path $NUGET_EXE)) {
-    Invoke-WebRequest -Uri http://nuget.org/nuget.exe -OutFile $NUGET_EXE
+    (New-Object System.Net.WebClient).DownloadFile("http://nuget.org/nuget.exe", $NUGET_EXE)
 }
 
 # Make sure NuGet exists where we expect it.
