@@ -90,7 +90,7 @@ if (!(Test-Path $PACKAGES_CONFIG)) {
 # Try find NuGet.exe in path if not exists
 if (!(Test-Path $NUGET_EXE)) {
     Write-Verbose -Message "Trying to find nuget.exe in PATH..."
-    $existingPaths = $Env:Path -Split ';' | Where-Object { Test-Path $_ }
+    $existingPaths = $Env:Path -Split ';' | Where-Object { (![string]::IsNullOrEmpty($_)) -and (Test-Path $_) }
     $NUGET_EXE_IN_PATH = Get-ChildItem -Path $existingPaths -Filter "nuget.exe" | Select -First 1
     if ($NUGET_EXE_IN_PATH -ne $null -and (Test-Path $NUGET_EXE_IN_PATH.FullName)) {
         Write-Verbose -Message "Found in PATH at $($NUGET_EXE_IN_PATH.FullName)."
