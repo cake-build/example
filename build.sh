@@ -31,6 +31,8 @@ for i in "$@"; do
     shift
 done
 
+mkdir -p $TOOLS_DIR
+
 # Download NuGet if it does not exist.
 if [ ! -f $NUGET_EXE ]; then
     echo "Downloading NuGet..."
