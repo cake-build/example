@@ -9,6 +9,7 @@ SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 TOOLS_DIR=$SCRIPT_DIR/tools
 NUGET_EXE=$TOOLS_DIR/nuget.exe
 CAKE_EXE=$TOOLS_DIR/Cake/Cake.exe
+PACKAGES_CONFIG=$TOOLS_DIR/packages.config
 
 # Define default arguments.
 SCRIPT="build.cake"
@@ -17,6 +18,7 @@ CONFIGURATION="Release"
 VERBOSITY="verbose"
 DRYRUN=false
 SHOW_VERSION=false
+
 
 # Parse arguments.
 for i in "$@"; do
@@ -31,12 +33,24 @@ for i in "$@"; do
     shift
 done
 
+mkdir -p $TOOLS_DIR
+
 # Download NuGet if it does not exist.
 if [ ! -f $NUGET_EXE ]; then
     echo "Downloading NuGet..."
-    curl -Lsfo $NUGET_EXE https://www.nuget.org/nuget.exe
+    curl -Lsfo $NUGET_EXE https://dist.nuget.org/win-x86-commandline/v3.4.4/NuGet.exe
     if [ $? -ne 0 ]; then
         echo "An error occured while downloading nuget.exe."
+        exit 1
+    fi
+fi
+
+# Download tools/packages.config if it doesn't exist
+if [ ! -f $PACKAGES_CONFIG ]; then
+    echo "Downloading packages.config"
+    curl -Lsfo $PACKAGES_CONFIG http://cakebuild.net/download/bootstrapper/packages
+    if [ $? -ne 0 ]; then
+        echo "An error occured while downloading packages.config"
         exit 1
     fi
 fi
