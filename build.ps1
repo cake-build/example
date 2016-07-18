@@ -1,3 +1,9 @@
+##########################################################################
+# This is the Cake bootstrapper script for PowerShell.
+# This file was downloaded from https://github.com/cake-build/resources
+# Feel free to change this file to fit your needs.
+##########################################################################
+
 <#
 
 .SYNOPSIS
@@ -22,6 +28,10 @@ Performs a dry run of the build script.
 No tasks will be executed.
 .PARAMETER Mono
 Tells Cake to use the Mono scripting engine.
+.PARAMETER SkipToolPackageRestore
+Skips restoring of packages.
+.PARAMETER ScriptArgs
+Remaining arguments are added here.
 
 .LINK
 http://cakebuild.net
@@ -32,6 +42,7 @@ http://cakebuild.net
 Param(
     [string]$Script = "build.cake",
     [string]$Target = "Default",
+    [ValidateSet("Release", "Debug")]
     [string]$Configuration = "Release",
     [ValidateSet("Quiet", "Minimal", "Normal", "Verbose", "Diagnostic")]
     [string]$Verbosity = "Verbose",
@@ -49,11 +60,13 @@ Write-Host "Preparing to run build script..."
 if(!$PSScriptRoot){
     $PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
 }
+
 $TOOLS_DIR = Join-Path $PSScriptRoot "tools"
 $NUGET_EXE = Join-Path $TOOLS_DIR "nuget.exe"
-$NUGET_URL = "http://dist.nuget.org/win-x86-commandline/latest/nuget.exe"
 $CAKE_EXE = Join-Path $TOOLS_DIR "Cake/Cake.exe"
+$NUGET_URL = "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe"
 $PACKAGES_CONFIG = Join-Path $TOOLS_DIR "packages.config"
+$PACKAGES_CONFIG_MD5 = Join-Path $TOOLS_DIR "packages.config.md5sum"
 
 # Should we use mono?
 $UseMono = "";
@@ -114,21 +127,25 @@ if (!(Test-Path $NUGET_EXE)) {
 $ENV:NUGET_EXE = $NUGET_EXE
 
 # Restore tools from NuGet?
-if(-Not $SkipToolPackageRestore.IsPresent)
-{
-    # Restore packages from NuGet.
+if(-Not $SkipToolPackageRestore.IsPresent) {
     Push-Location
     Set-Location $TOOLS_DIR
 
+    # Check for changes in packages.config and remove installed tools if true.
+    if((-Not (Test-Path $PACKAGES_CONFIG_MD5)) -Or
+      ((Get-FileHash -Path $PACKAGES_CONFIG -Algorithm MD5).Hash.ToLower() -ne (Get-Content $PACKAGES_CONFIG_MD5))) {
+        Remove-Item * -Recurse -Exclude packages.config,nuget.exe
+    }
+
     Write-Verbose -Message "Restoring tools from NuGet..."
     $NuGetOutput = Invoke-Expression "&`"$NUGET_EXE`" install -ExcludeVersion -OutputDirectory `"$TOOLS_DIR`""
-    Write-Verbose -Message ($NuGetOutput | out-string)
+    (Get-FileHash -Path $PACKAGES_CONFIG -Algorithm MD5).Hash.ToLower() | Out-File $PACKAGES_CONFIG_MD5 -Encoding "ASCII"
 
-    Pop-Location
-    if ($LASTEXITCODE -ne 0)
-    {
-        exit $LASTEXITCODE
+    if ($LASTEXITCODE -ne 0) {
+        Throw "An error occured while restoring NuGet tools."
     }
+    Write-Verbose -Message ($NuGetOutput | out-string)
+    Pop-Location
 }
 
 # Make sure that Cake has been installed.
