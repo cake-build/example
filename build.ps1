@@ -185,5 +185,24 @@ if (!(Test-Path $CAKE_EXE)) {
 
 # Start Cake
 Write-Host "Running build script..."
-Invoke-Expression "& `"$CAKE_EXE`" `"$Script`" -target=`"$Target`" -configuration=`"$Configuration`" -verbosity=`"$Verbosity`" $UseMono $UseDryRun $UseExperimental $ScriptArgs"
+
+$CAKE_ARGS = @($Script, "-target=$Target", "-configuration=$Configuration", "-verbosity=$Verbosity")
+
+if ($UseMono) {
+    $CAKE_ARGS += @($UseMono)
+}
+
+if ($UseDryRun) {
+    $CAKE_ARGS += @($UseDryRun)
+}
+
+if ($UseExperimental) {
+    $CAKE_ARGS += @($UseExperimental)
+}
+
+if ($ScriptArgs -ne $null) {
+    $CAKE_ARGS += $ScriptArgs
+}
+
+& $CAKE_EXE $CAKE_ARGS
 exit $LASTEXITCODE
