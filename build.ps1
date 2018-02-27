@@ -65,10 +65,10 @@ function MD5HashFile([string] $filePath)
     }
 
     [System.IO.Stream] $file = $null;
-    [System.Security.Cryptography.MD5] $md5 = $null;
+    [System.Security.Cryptography.SHA1] $md5 = $null;
     try
     {
-        $md5 = [System.Security.Cryptography.MD5]::Create()
+        $md5 = [System.Security.Cryptography.SHA1]::Create()
         $file = [System.IO.File]::OpenRead($filePath)
         return [System.BitConverter]::ToString($md5.ComputeHash($file))
     }
