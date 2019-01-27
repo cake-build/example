@@ -32,7 +32,7 @@ SHOW_VERSION=false
 SCRIPT_ARGUMENTS=()
 
 # Parse arguments.
-for i in "$@"; do
+while [[ $# -gt 0 ]]; do
     case $1 in
         -s|--script) SCRIPT="$2"; shift ;;
         -t|--target) TARGET="$2"; shift ;;
