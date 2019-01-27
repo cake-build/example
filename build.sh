@@ -69,6 +69,7 @@ if [ ! -f "$NUGET_EXE" ]; then
         echo "An error occurred while downloading nuget.exe."
         exit 1
     fi
+    chmod +x "$NUGET_EXE"
 fi
 
 # Restore tools from NuGet.
