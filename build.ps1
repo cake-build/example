@@ -31,6 +31,8 @@ Uses the nightly builds of the Roslyn script engine.
 Uses the Mono Compiler rather than the Roslyn script engine.
 .PARAMETER SkipToolPackageRestore
 Skips restoring of packages.
+.PARAMETER CakeDir
+Restore path for Cake NuGet packages.
 .PARAMETER ScriptArgs
 Remaining arguments are added here.
 
@@ -52,6 +54,7 @@ Param(
     [switch]$Experimental,
     [switch]$Mono,
     [switch]$SkipToolPackageRestore,
+	[string]$CakeDir,
     [Parameter(Position=0,Mandatory=$false,ValueFromRemainingArguments=$true)]
     [string[]]$ScriptArgs
 )
@@ -96,7 +99,14 @@ if(!$PSScriptRoot){
     $PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
 }
 
-$TOOLS_DIR = Join-Path $PSScriptRoot "tools"
+# Set Cake NuGet restore path
+if ($CakeDir){
+	$TOOLS_DIR = Join-Path $PSScriptRoot $CakeDir
+}
+else{
+	$TOOLS_DIR = Join-Path $PSScriptRoot "tools"
+}
+
 $ADDINS_DIR = Join-Path $TOOLS_DIR "Addins"
 $MODULES_DIR = Join-Path $TOOLS_DIR "Modules"
 $NUGET_EXE = Join-Path $TOOLS_DIR "nuget.exe"
