@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace Example.Tests
 {
-	[TestFixture]
+    [TestFixture]
     public sealed class AnimalTests
     {
         [Test]
