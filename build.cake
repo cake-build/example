@@ -1,6 +1,3 @@
-#tool nuget:?package=NuGet.CommandLine&version=5.11.0
-#tool nuget:?package=NUnit.ConsoleRunner&version=3.4.0
-
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
 //////////////////////////////////////////////////////////////////////
@@ -29,34 +26,29 @@ Task("Restore-NuGet-Packages")
     .IsDependentOn("Clean")
     .Does(() =>
 {
-    NuGetRestore("./src/Example.sln");
+    DotNetCoreRestore("./src/Example.sln");
 });
 
 Task("Build")
     .IsDependentOn("Restore-NuGet-Packages")
     .Does(() =>
 {
-    if(IsRunningOnWindows())
+    DotNetCoreBuild("./src/Example.sln", new DotNetCoreBuildSettings
     {
-      // Use MSBuild
-      MSBuild("./src/Example.sln", settings =>
-        settings.SetConfiguration(configuration));
-    }
-    else
-    {
-      // Use XBuild
-      XBuild("./src/Example.sln", settings =>
-        settings.SetConfiguration(configuration));
-    }
+      Configuration = configuration,
+      NoRestore = true,
+    });
 });
 
 Task("Run-Unit-Tests")
     .IsDependentOn("Build")
     .Does(() =>
 {
-    NUnit3("./src/**/bin/" + configuration + "/*.Tests.dll", new NUnit3Settings {
-        NoResults = true
-        });
+    DotNetCoreTest("./src/Example.sln", new DotNetCoreTestSettings
+    {
+      Configuration = configuration,
+      NoRestore = true,
+    });
 });
 
 //////////////////////////////////////////////////////////////////////

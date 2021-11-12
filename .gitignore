@@ -63,3 +63,5 @@ Thumbs.db
 
 # NUnit
 TestResult.xml
+.vs/
+.idea/
