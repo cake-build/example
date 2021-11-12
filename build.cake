@@ -35,8 +35,8 @@ Task("Build")
 {
     DotNetCoreBuild("./src/Example.sln", new DotNetCoreBuildSettings
     {
-      Configuration = configuration,
-      NoRestore = true,
+        Configuration = configuration,
+        NoRestore = true,
     });
 });
 
@@ -46,8 +46,8 @@ Task("Run-Unit-Tests")
 {
     DotNetCoreTest("./src/Example.sln", new DotNetCoreTestSettings
     {
-      Configuration = configuration,
-      NoRestore = true,
+        Configuration = configuration,
+        NoRestore = true,
     });
 });
 
