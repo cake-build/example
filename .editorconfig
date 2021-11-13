@@ -1,0 +1,41 @@
+root = true
+
+[*]
+charset = utf-8
+indent_size = 4
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# This may not be needed, but kept for compatibility with VS
+[*.{sln,csproj}]
+end_of_line = crlf
+
+# Markdown files allows the use of trailing spaces to denote
+# a line break
+[*.md]
+trim_trailing_whitespace = false
+
+# Batch and powershell files requires crlf to be
+# used as the line ending.
+# Powershell also requires UTF-8 with BOM encoding
+# to function if utf8 characters is used (maibe batch files as well)
+[*.{bat,ps1}]
+charset = utf-8-bom
+end_of_line = crlf
+
+# Shell scripts requires the use of lf line endings
+# to be able to run.
+[*.sh]
+end_of_line = lf
+
+# The visual studio code file
+# requires the use of crlf line endings
+[tasks.json]
+end_of_line = crlf
+
+# xml indent 2 spaces
+[*.{xml,csproj,props,targets}]
+indent_size = 2
+indent_style = space
+tab_width = 2
