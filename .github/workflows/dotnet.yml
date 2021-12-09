@@ -8,11 +8,10 @@ on:
 
 jobs:
   my_test:
-
     runs-on: ubuntu-latest
-
     steps:
-  
-    -name: Hello
+    - name: Test
+    run : echo "Hello"
     
-    run: echo "Hello"
+      
+
