@@ -1,7 +1,6 @@
-﻿namespace Example
+﻿namespace Example;
+
+public interface IAnimal
 {
-    public interface IAnimal
-    {
-        string Talk();
-    }
+    string Talk();
 }

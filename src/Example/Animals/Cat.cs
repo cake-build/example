@@ -1,10 +1,9 @@
-﻿namespace Example.Animals
+﻿namespace Example.Animals;
+
+public sealed class Cat : IAnimal
 {
-    public sealed class Cat : IAnimal
+    public string Talk()
     {
-        public string Talk()
-        {
-            return "Meow";
-        }
+        return "Meow";
     }
 }
