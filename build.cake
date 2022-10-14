@@ -26,14 +26,14 @@ Task("Restore-NuGet-Packages")
     .IsDependentOn("Clean")
     .Does(() =>
 {
-    DotNetCoreRestore("./src/Example.sln");
+    DotNetRestore("./src/Example.sln");
 });
 
 Task("Build")
     .IsDependentOn("Restore-NuGet-Packages")
     .Does(() =>
 {
-    DotNetCoreBuild("./src/Example.sln", new DotNetCoreBuildSettings
+    DotNetBuild("./src/Example.sln", new DotNetBuildSettings
     {
         Configuration = configuration,
         NoRestore = true,
@@ -44,7 +44,7 @@ Task("Run-Unit-Tests")
     .IsDependentOn("Build")
     .Does(() =>
 {
-    DotNetCoreTest("./src/Example.sln", new DotNetCoreTestSettings
+    DotNetTest("./src/Example.sln", new DotNetTestSettings
     {
         Configuration = configuration,
         NoRestore = true,
