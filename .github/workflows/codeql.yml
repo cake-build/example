@@ -22,7 +22,7 @@ on:
 
 jobs:
   analyze:
-    nme: Analyze
+    nme: Analyzecode
     runs-on: ubuntu-latest
     permissions:
       actions: read
